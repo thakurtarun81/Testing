@@ -35,12 +35,7 @@ function App() {
     setForm(list[index]);
     setEditIndex(index);
   };
-
-  // delete
-  const handleOnDelete = (index) => {
-    setList(list.filter((_, i) => i !== index));
-  };
-
+  
   return (
     <div
       style={{
