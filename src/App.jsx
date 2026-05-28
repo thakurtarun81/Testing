@@ -9,6 +9,7 @@ function App() {
   // handle input change
   const handleOnChange = (e) => {
     const { name, value } = e.target;
+
     setForm((prev) => ({
       ...prev,
       [name]: value,
@@ -22,6 +23,7 @@ function App() {
     if (editIndex !== null) {
       const updatedList = [...list];
       updatedList[editIndex] = form;
+
       setList(updatedList);
       setEditIndex(null);
     } else {
@@ -31,56 +33,39 @@ function App() {
     setForm({ state: "", city: "" });
   };
 
+  // edit
   const handleOnEdit = (index) => {
     setForm(list[index]);
     setEditIndex(index);
   };
 
-  
-  const handleOnEditAll = (index) => {
-    setForm(list[index]);
-    setEditIndex(index);
+  // delete
+  const handleOnDelete = (index) => {
+    const filteredData = list.filter((_, i) => i !== index);
+
+    setList(filteredData);
+
+    if (editIndex === index) {
+      setForm({ state: "", city: "" });
+      setEditIndex(null);
+    }
   };
 
   return (
-    <div
-      style={{
-        padding: "30px",
-        fontFamily: "Arial",
-        backgroundColor: "#f4f6f9",
-        minHeight: "100vh",
-      }}
-    >
-      <h1
-        style={{
-          textAlign: "center",
-          color: "#1e293b",
-          marginBottom: "20px",
-        }}
-      >
+    <div className="min-h-screen bg-slate-100 p-8">
+      <h1 className="text-center text-4xl font-bold text-slate-800 mb-8">
         This is CRUD
       </h1>
 
-      <div
-        style={{
-          display: "flex",
-          gap: "10px",
-          justifyContent: "center",
-          marginBottom: "20px",
-        }}
-      >
+      {/* Form */}
+      <div className="flex flex-wrap justify-center gap-4 mb-8">
         <input
           type="text"
           name="state"
           value={form.state}
           onChange={handleOnChange}
           placeholder="Enter State"
-          style={{
-            padding: "10px",
-            borderRadius: "8px",
-            border: "1px solid #ccc",
-            width: "200px",
-          }}
+          className="w-55 rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
         />
 
         <input
@@ -89,88 +74,59 @@ function App() {
           value={form.city}
           onChange={handleOnChange}
           placeholder="Enter City"
-          style={{
-            padding: "10px",
-            borderRadius: "8px",
-            border: "1px solid #ccc",
-            width: "200px",
-          }}
+          className="w-55 rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
         />
 
         <button
           onClick={handleOnSave}
-          style={{
-            padding: "10px 20px",
-            border: "none",
-            borderRadius: "8px",
-            backgroundColor: "#2563eb",
-            color: "white",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
+          className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
         >
           {editIndex !== null ? "Update" : "Save"}
         </button>
       </div>
 
-      <table
-        border="1"
-        style={{
-          width: "80%",
-          margin: "auto",
-          borderCollapse: "collapse",
-          backgroundColor: "white",
-          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-        }}
-      >
-        <thead>
-          <tr style={{ backgroundColor: "#2563eb", color: "white" }}>
-            <th style={{ padding: "12px" }}>State</th>
-            <th style={{ padding: "12px" }}>City</th>
-            <th style={{ padding: "12px" }}>Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {list.map((item, index) => (
-            <tr key={index} style={{ textAlign: "center" }}>
-              <td style={{ padding: "10px" }}>{item.state}</td>
-              <td style={{ padding: "10px" }}>{item.city}</td>
-
-              <td style={{ padding: "10px" }}>
-                <button
-                  onClick={() => handleOnEdit(index)}
-                  style={{
-                    marginRight: "10px",
-                    padding: "6px 12px",
-                    border: "none",
-                    borderRadius: "6px",
-                    backgroundColor: "green",
-                    color: "white",
-                    cursor: "pointer",
-                  }}
-                >
-                  Edit
-                </button>
-
-                <button
-                  onClick={() => handleOnDelete(index)}
-                  style={{
-                    padding: "6px 12px",
-                    border: "none",
-                    borderRadius: "6px",
-                    backgroundColor: "red",
-                    color: "white",
-                    cursor: "pointer",
-                  }}
-                >
-                  Delete
-                </button>
-              </td>
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table className="w-[80%] mx-auto overflow-hidden rounded-xl bg-white shadow-lg">
+          <thead>
+            <tr className="bg-yellow-600 text-white">
+              <th className="p-3">State</th>
+              <th className="p-3">City</th>
+              <th className="p-3">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {list.map((item, index) => (
+              <tr
+                key={index}
+                className="text-center border-b border-gray-200"
+              >
+                <td className="py-0 px-0">{item.state}</td>
+
+                <td className="py-0 px-0">{item.city}</td>
+
+                <td className="py-0 px-0">
+                  <button
+                    onClick={() => handleOnEdit(index)}
+                    className="mr-3 rounded-md bg-green-600 px-0 py-0 text-white hover:bg-green-700"
+                  >
+                    
+                    Edit
+                  </button>
+
+                  <button
+                    onClick={() => handleOnDelete(index)}
+                    className="rounded-md bg-red-600 px-0 py-0 text-white hover:bg-red-700"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
