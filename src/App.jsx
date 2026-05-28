@@ -35,7 +35,13 @@ function App() {
     setForm(list[index]);
     setEditIndex(index);
   };
+
   
+  const handleOnEditAll = (index) => {
+    setForm(list[index]);
+    setEditIndex(index);
+  };
+
   return (
     <div
       style={{
